@@ -1,0 +1,40 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="dev.kykzuu.laby7.MainFragment"
+        android:label="Main">
+        <action
+            android:id="@+id/action_mainFragment_to_airQualityFragment"
+            app:destination="@id/airQualityFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/airQualityFragment"
+        android:name="dev.kykzuu.laby7.AirQualityFragment"
+        android:label="Air Quality">
+        <action
+            android:id="@+id/action_airQualityFragment_to_stationDetailsFragment"
+            app:destination="@id/stationDetailsFragment" >
+            <argument
+                android:name="stationId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/stationDetailsFragment"
+        android:name="dev.kykzuu.laby7.StationDetailsFragment"
+        android:label="Station Details" >
+        <argument
+            android:name="stationId"
+            app:argType="integer" />
+    </fragment>
+</navigation>

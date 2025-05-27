@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AirQualityActivity"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="ID: -"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewStCalcDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Data pomiaru (stCalcDate): -"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textViewId"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewStIndexLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Stan jakości powietrza: -"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textViewStCalcDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewNo2IndexLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="NO2 poziom: -"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textViewStIndexLevel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewPm25IndexLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="PM2.5 poziom: -"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textViewNo2IndexLevel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewStIndexStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Status indeksu: -"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textViewPm25IndexLevel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cofnij"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/buttonStationDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="328dp"
+        android:text="Szczegóły stacji"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStIndexStatus" />
+</androidx.constraintlayout.widget.ConstraintLayout>
