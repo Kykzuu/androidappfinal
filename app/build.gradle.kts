@@ -48,8 +48,19 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
-    // inne zależności, np. Gson
+    // Gson - zostawiamy
     implementation("com.google.code.gson:gson:2.8.9")
+
+    // Retrofit z Moshi
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    // Moshi
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")

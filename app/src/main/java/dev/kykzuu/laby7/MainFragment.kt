@@ -4,59 +4,102 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.openapitools.client.apis.ItemsApi
+import org.openapitools.client.models.ItemsGet200Response
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainFragment : Fragment() {
 
     private val gson = Gson()
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
+    private lateinit var itemNamesAdapter: ArrayAdapter<String>
+    private val itemNamesList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false) // twój layout
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.buttonWroclaw).setOnClickListener {
-            fetchAndNavigate("https://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/129")
-        }
+        autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView)
 
-        view.findViewById<Button>(R.id.buttonKrakow).setOnClickListener {
-            fetchAndNavigate("https://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/400")
-        }
+        // Adapter do AutoCompleteTextView (na razie pusty)
+        itemNamesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, itemNamesList)
+        autoCompleteTextView.setAdapter(itemNamesAdapter)
 
-        view.findViewById<Button>(R.id.buttonWarszawa).setOnClickListener {
-            fetchAndNavigate("https://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/550")
-        }
+        // Budujemy Moshi z KotlinJsonAdapterFactory
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
 
-        view.findViewById<Button>(R.id.buttonAutor).setOnClickListener {
-            Toast.makeText(requireContext(), "Autor: Jakub Kawa", Toast.LENGTH_SHORT).show()
-        }
-    }
+        // Retrofit z Moshi
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.warframe.market/v1/")
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
 
-    private fun fetchAndNavigate(url: String) {
-        ApiClient.fetchAirQualityData(url) { dataItem ->
-            activity?.runOnUiThread {
-                if (dataItem != null) {
-                    val jsonString = gson.toJson(dataItem)
-                    val bundle = Bundle().apply {
-                        putString("airQualityData", jsonString)
+        val apiService = retrofit.create(ItemsApi::class.java)
+
+        val call: Call<ItemsGet200Response> = apiService.itemsGet(language = ItemsApi.LanguageItemsGet.en)
+
+        call.enqueue(object : retrofit2.Callback<ItemsGet200Response> {
+            override fun onResponse(call: Call<ItemsGet200Response>, response: retrofit2.Response<ItemsGet200Response>) {
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    data?.payload?.items?.let { items ->
+                        // Wypełniamy listę nazw przedmiotów
+                        itemNamesList.clear()
+                        itemNamesList.addAll(items.mapNotNull { it.itemName })
+                        // Odświeżamy adapter na UI thread
+                        activity?.runOnUiThread {
+                            itemNamesAdapter.notifyDataSetChanged()
+                        }
                     }
-                    findNavController().navigate(
-                        R.id.action_mainFragment_to_airQualityFragment,
-                        bundle
-                    )
                 } else {
-                    Toast.makeText(requireContext(), "Brak danych lub błąd pobierania", Toast.LENGTH_SHORT).show()
+                    println("Error HTTP ${response.code()}")
                 }
             }
+
+            override fun onFailure(call: Call<ItemsGet200Response>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+
+        // Obsługa wyboru elementu z listy
+        autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position) as String
+
+            // Przekierowanie na ten sam fragment z przekazaniem danych
+            val bundle = Bundle().apply {
+                putString("selectedItem", selectedItem)
+            }
+            findNavController().navigate(R.id.action_mainFragment_self, bundle)
+        }
+
+        // Odczyt przekazanej wartości (jeśli jest)
+        arguments?.getString("selectedItem")?.let { selectedItem ->
+            Toast.makeText(requireContext(), "Wybrano: $selectedItem", Toast.LENGTH_SHORT).show()
+            // Tutaj możesz zrobić coś więcej np. załadować szczegóły itp.
+        }
+
+        // Przycisk autor
+        view.findViewById<Button>(R.id.buttonAutor).setOnClickListener {
+            Toast.makeText(requireContext(), "Autor: Jakub Kawa", Toast.LENGTH_SHORT).show()
         }
     }
 }
