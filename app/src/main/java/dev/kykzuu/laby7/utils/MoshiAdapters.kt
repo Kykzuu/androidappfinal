@@ -1,8 +1,6 @@
-package dev.kykzuu.laby7
+package dev.kykzuu.laby7.utils
 
 import com.squareup.moshi.*
-import okio.BufferedSource
-import okio.BufferedSink
 import java.time.OffsetDateTime
 
 class OffsetDateTimeAdapter {

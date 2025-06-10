@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="dev.kykzuu.laby7.MainFragment"
+        android:name="dev.kykzuu.laby7.ui.MainFragment"
         android:label="Main">
         <!-- Akcja do przejścia do szczegółów -->
         <action
@@ -15,6 +15,6 @@
 
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="dev.kykzuu.laby7.DetailsFragment"
+        android:name="dev.kykzuu.laby7.ui.DetailsFragment"
         android:label="Szczegóły" />
 </navigation>
