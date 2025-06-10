@@ -7,10 +7,14 @@
         android:id="@+id/mainFragment"
         android:name="dev.kykzuu.laby7.MainFragment"
         android:label="Main">
-        <!-- Przykładowa akcja do nawigacji do siebie samego (dla wybranego elementu w AutoCompleteTextView) -->
+        <!-- Akcja do przejścia do szczegółów -->
         <action
-            android:id="@+id/action_mainFragment_self"
-            app:destination="@id/mainFragment" />
+            android:id="@+id/action_mainFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="dev.kykzuu.laby7.DetailsFragment"
+        android:label="Szczegóły" />
 </navigation>
